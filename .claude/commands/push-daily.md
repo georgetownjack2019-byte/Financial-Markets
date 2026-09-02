@@ -8,6 +8,11 @@ allowed-tools: mcp__Notion__notion-fetch, mcp__Notion__notion-create-pages, mcp_
 
 Publish today's briefing to Notion as a new sub-page of **DAILY BRIEFINGS**.
 
+For a recurring report use its own command (`/morning-briefing`, `/daily-recap`,
+`/crypto-levels`, `/targets-consensus`). This command is for ad-hoc content that
+does not fit one of those. Destination and formatting rules:
+`.claude/notion-push-rules.md`.
+
 ## Target
 
 - **Parent page:** `DAILY BRIEFINGS`
