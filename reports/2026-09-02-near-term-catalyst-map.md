@@ -80,7 +80,26 @@ called the yield surge "strong economic prospects"; Hammack said "now is the tim
 **No name in this book reports earnings before 27 October.** Every move between now and then is
 macro, flow, or single-headline driven. That is the defining feature of the next six weeks.
 
-## 5. Factor exposure
+## 5. Major factors — macro (11)
+
+Direction is the sign **for this book**. `−` negative, `+` positive, `±` two-way.
+Weight is dominant / major / secondary.
+
+| # | Factor | Dir | Weight | Mechanism |
+|---|---|---|---|---|
+| 1 | Fed reaction function under Warsh | − | dominant | Inflation, not employment, is the binding constraint. 16 Sep: my estimate 60% hike. Futures 56–70%, Kalshi 48%, Polymarket 49%. |
+| 2 | Long-end term premium | − | dominant | 30y 5.27 / 10y 4.79 / 2y 4.39 — bear steepener from Treasury supply and fiscal position, not growth. Odds 10y > 5.00% in six weeks: ~35%. |
+| 3 | Oil and Iran escalation | − | dominant | Crude near $90, Hormuz risk. The inflation impulse forcing the Fed's hand. Odds oil > $100: ~25%. |
+| 4 | Labour deterioration | ± | dominant | ADP +38k vs +47k est; July payrolls −23k; Challenger cuts est 62k vs 33k; Uber cutting 3,300. Odds U-rate 4.3% by 2 Oct: ~40%. |
+| 5 | Sticky inflation | − | dominant | CPI 3.4% y/y, core 2.5%; Michigan 1yr expectations 4.0%; ISM services prices 70.3. Aug CPI 11 Sep, headline est +0.4% m/m. |
+| 6 | AI-capex credibility | − | major | Altman's bubble remark, token-price collapse, falling compute rental prices, IREN's impairment. Odds a hyperscaler visibly cuts capex guidance in six weeks: ~15%. |
+| 7 | Global bond repricing | − | major | Japan 10y at 3%. Every long-duration asset worldwide marked against a higher risk-free rate. |
+| 8 | Positioning and crowding | − | major | PLTR +48% in August, BTC +25%. 18 Sep quarterly expiry is the largest scheduled flow event in the window. |
+| 9 | Fiscal risk removed | + | major | House passed a stopgap 370–48 on 1 Sep funding to **11 December**. The 1 Oct shutdown risk is off the table — matters most for PLTR. |
+| 10 | Dollar and the won | ± | secondary | Korea's FX fund bought ~$20bn from the SKHY ADR windfall. Direct for SKHY, second-order elsewhere. |
+| 11 | Credit conditions | ± | secondary | The convert and high-yield issuance window funds WULF and IREN. It closes quietly, with no scheduled date. |
+
+## 5b. Factor exposure at a glance
 
 | | Long-end rates | AI capex cycle | BTC price | Supply / dilution |
 |---|---|---|---|---|
@@ -109,6 +128,21 @@ That is ~36x debt/equity. WULF is not a stock that dislikes higher rates; it is 
 cost of capital for data-centre buildout. Every basis point on the long end is a direct hit to the
 NPV of contracted lease revenue *and* to refinancing cost. It fell alongside IREN on 1 Sep purely
 on the yield move.
+
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Cost of capital | − | dominant | $5.24bn debt on $147m book equity. Every bp hits lease NPV and refinancing cost at once. |
+| Financing window | − | dominant | Funded by converts and JV secured notes. Odds of a new equity-linked raise in six weeks: ~30%. |
+| HPC lease pipeline | + | major | 360+ MW to Fluidstack at Lake Mariner; Kentucky cleared 482 MW at Justified 24 Aug. A signed tenant there is the re-rating. ~30% by mid-Oct. |
+| Google relationship | ± | major | ~$3.2bn backstop is real credit support; the warrants are ~14% pro-forma dilution overhead. |
+| Tenant credit | − | major | Fluidstack is the counterparty, Google only the backstop. The unpriced variable in the lease stack. |
+| AI-capex read-across | + | major | Rose 6% on NVIDIA's guidance 27 Aug with no company news. AVGO tonight, ORCL 8 Sep. |
+| Bitcoin price | + | secondary | Residual legacy mining plus sentiment beta; rallied 5% when BTC topped $80k on 25 Aug. |
+| Energisation timing | − | secondary | CB-5 slated H2 2026. Slippage pushes revenue past the funding runway. |
+| Competitive adjacency | − | secondary | SpaceX entering power and data centres. |
+| Insider supply | − | secondary | CEO sold 137,500 shares at $17.06 on 31 Aug under a 10b5-1 plan. |
 
 **Levels.** Support **$14.24** (1 Sep low) — below it, no shelf until the low-teens, since July's
 low was $14.81. Resistance $15.30, $16.53, $17.49, then the Aug high $19.66.
@@ -143,6 +177,21 @@ neoclouds are the designated bubble proxy.
 the stock doubling in six weeks; it closes by targets coming down, or by one contract announcement
 re-rating the whole complex. Grades split 11 buy / 3 hold / 1 sell, with published Strong Buy ($52 PT)
 and Strong Sell notes inside the same week.
+
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Funding gap | − | dominant | $25–30bn capex, $14bn funded, $6.08bn cash vs $7.84bn debt. Odds an equity raise is announced despite management: ~25%. |
+| ARR-to-revenue timing | − | dominant | ~$4bn contracted, most converting March 2027. Punitive at a 4.79% 10y. |
+| Named anchor customer | + | dominant | None disclosed behind the $4bn. The biggest single upside catalyst available. |
+| Contract pricing | ± | major | 3yr pricing +125% since November, ~$25m revenue per MW. If it rolls over the thesis inverts. |
+| AI compute price deflation | − | major | Falling rental prices are the structural risk to every neocloud. |
+| Bubble narrative | − | major | Altman's 2 Sep remark; neoclouds are the designated proxy. |
+| Further impairments | − | major | The $639m rig writedown may not be the last of the mining exit. |
+| Analyst target gap | − | major | $84 consensus vs $39.41 spot. Closes through cuts far more often than through a double. |
+| GPU delivery and allocation | − | secondary | Revenue timing rides on hardware arriving on schedule. |
+| Competition | − | secondary | CoreWeave, Nebius, and now SpaceX's adjacency, chasing the same tenants. |
 
 **Levels.** Support **$34.81** (28 Aug low), then $28.93 (July low). Resistance $39.49 (today's high),
 $41.57, $45.54, Aug high $49.19.
@@ -182,6 +231,21 @@ issuance (2 Sep coverage). GENIUS Act final rules land in **November**, enforcem
 Rules that permit stablecoin rewards would compress Circle's spread; rules that entrench licensed
 issuers would widen its moat.
 
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Short rates | + | dominant | 25bp on $73.3bn ≈ +$183m gross annualised. The only positive rate exposure in the book. |
+| Distribution economics | − | dominant | Historically well over half of reserve income goes to partners. Net capture decides whether the hedge pays. |
+| Arc L1 mainnet, 16 Sep | + | dominant | BlackRock, DTCC, Visa, Mastercard, ICE, StanChart, MoneyGram as validators. Spread business becomes fee business. |
+| Bank competition | − | major | Institutions moving from experiment to direct issuance, with distribution Circle cannot match. |
+| GENIUS Act rules | ± | major | Final rules November, enforcement Jan 2027. Rewards compress the spread; entrenched licensing widens the moat. |
+| USDC supply growth | ± | major | $73.3bn, +19% y/y. 63% of volume on 28% of supply is both the strength and the share gap. |
+| Crypto beta | − | major | On 1 Sep bitcoin was flat and CRCL fell 4%. The rate hedge does not cover risk-off days. |
+| OCC trust charter | + | secondary | A federal bank charter is the structural moat and the option on new products. |
+| Extension | − | secondary | +25.2% over the 50-day. Most stretched name alongside PLTR. |
+| Distribution deals | + | secondary | Chelsea FC and similar. Brand reach, negligible near-term financials. |
+
 **Levels.** Support $85.87 (today's low), $80, then $72.86 / $70.91 (50DMA). Resistance $93.30,
 Aug high **$96.40**, then $105.
 
@@ -218,6 +282,21 @@ date to be flow-driven rather than fundamental.
 and grades split 13 buy / 10 hold / 3 sell. The Street is not arguing about the business. It is
 arguing about the multiple.
 
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Multiple duration | − | dominant | ~43× forward sales, ~159× trailing. Fell ~3× the index on 1 Sep on a yield move alone. |
+| Software sector de-rating | − | dominant | Palo Alto and peers selling together. Regime or noise is the fortnight's question. |
+| Commercial acceleration | + | major | US commercial +149% y/y and the largest-ever guidance raise, to ~$8.154bn. |
+| Government contracting | + | major | Army TITAN production award 2 Sep. The stopgap to 11 Dec removes the 1 Oct shutdown risk. |
+| 18 Sep quarterly expiry | ± | major | Largest positioning event before the 2 Nov print, heavy open interest. Flow sets the path. |
+| Crowding | − | major | Top-searched ticker in August; the stock ran ~48% in the month. |
+| Analyst dispersion | − | major | Targets $80–$215; 10 holds and 3 sells against 13 buys; consensus 4% above spot. |
+| Enterprise credibility hires | + | secondary | Zaffino from AIG as Global Head of Financial Services from 15 Jan 2027. |
+| Insider supply | − | secondary | Continuing scheduled executive selling is persistent in this name. |
+| Defence-tech narrative | + | secondary | Karp backing Fedorov's new venture keeps Palantir central to the category. |
+
 **Levels.** Support $165.71 (today's low), $151.33 (200DMA), $146.11 (50DMA), then the Aug low $123.66.
 Resistance $177.55, $179.92, Aug high $188.37, then $200.
 
@@ -249,6 +328,21 @@ supply meeting the weakest possible bid.
 **Second-order:** Barron's flagged on 2 Sep that SpaceX moving into adjacent businesses is dragging
 power stocks — Musk framing energy as the AI bottleneck. That is a *negative* read-across for
 IREN and WULF: it puts a trillion-dollar balance sheet into their addressable market.
+
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Lockup supply | − | dominant | First 20–30% tranche ~6 Aug; 7% employee tranches late September expand the float ~6×; 180-day cliff 8 Dec. |
+| No valuation anchor | − | dominant | IPO $135, peak $225.64, low $104.83, now $139.74. Twelve weeks of history, targets $75–$450. |
+| Orbital data centres | + | major | Pulled into Q4 2027, NVIDIA tie-up, ~75GW targeted by 2031. The entire AI-adjacency premium. |
+| Starship cadence | ± | major | Milestones and failures both move the stock; neither is scheduled. |
+| Starlink economics | + | major | V3 at up to 1 Tbps per unit with laser links. The cash engine under the story. |
+| Key-man and political risk | − | major | Founder concentration with policy entanglement that cuts both ways. |
+| Capital commitments | − | secondary | Starbase Louisiana construction from 2027, first launches 2029. |
+| Government and NASA awards | + | secondary | Launch and national-security contract flow is lumpy and unscheduled. |
+| Future index inclusion | + | secondary | Not yet eligible; passive demand is a 2027 factor, not a September one. |
+| Adjacency expansion | ± | secondary | Widens the TAM here and narrows it for IREN and WULF. |
 
 **Levels.** Support $138.21 (today's low), $130.39, then $120 and the Aug low $104.83. Resistance
 $145.23, Aug high $149.80, then $160.
@@ -284,6 +378,21 @@ Samsung and SK hynix both fell ~3% on 1 September on the macro shock.
 **Coverage caveat:** consensus PT $234.86 rests on **only two analysts** (median $204). Treat the
 +43% implied upside as thin, not as a signal.
 
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| HBM demand / hyperscaler capex | + | dominant | NVIDIA's 26 Aug guidance reignited the compute trade; Broadcom tonight and Oracle 8 Sep are next. |
+| Micron guidance, 30 Sep | ± | dominant | The decisive memory read-across and the highest-information event inside the window. |
+| Q4 contract pricing | ± | dominant | DRAM and NAND negotiations run September–October. Memory is ~half of global semiconductor revenue. |
+| Cycle-peak risk | − | major | Q3 consensus EPS 6.15 against 8.76 delivered. A low bar, or the first honest peak signal. |
+| Supply response | − | major | A flagged multi-year expansion of roughly $720bn. Capacity has ended every prior memory cycle. |
+| Samsung and HBM4 qualification | ± | major | Share at NVIDIA is the swing variable in the next product generation. |
+| Won and FX | − | major | The ADR is a KRW claim; authorities bought ~$20bn of dollars from the $26.5bn windfall. |
+| Thin US coverage | − | major | The $234.86 consensus rests on two analysts, median $204. |
+| ADR-versus-Seoul dislocation | ± | secondary | Premium or discount to the Korean line can mean-revert violently. |
+| Export controls | − | secondary | China policy is an unscheduled tail for every memory maker. |
+
 **Levels.** Support $158.52, $151.50, then the Aug low $133.80. Resistance $167.46, Aug high $178.43,
 then the 52-week high $194.80.
 
@@ -312,6 +421,21 @@ case needs $80,000 reclaimed and then $81,000–82,000 held.
    pivot is the industry's, not just theirs.
 2. **Japan's 10-year is at 3%.** The global term-premium repricing is not a US-only story, and BTC
    trades as a long-duration, non-yielding asset in exactly that environment.
+
+**Major factors (10)**
+
+| Factor | Dir | Weight | Mechanism |
+|---|---|---|---|
+| Real rates and the Fed | − | dominant | 16 September. A non-yielding asset repriced by the opportunity cost of holding it. |
+| ETF flows | ± | dominant | August took a 2026-high $3.52bn; September opened with $236.5m out. The best daily-frequency signal on this position. |
+| Global term premium | − | major | Japan's 10y at 3%. Carry unwinds hit the longest-duration assets first. |
+| Treasury-company unwind | − | major | DAT vehicles straining, Nakamoto slumping. Forced sellers appear below NAV. |
+| Hashrate bear market | ± | major | Miners leaving for AI. Supports per-unit mining economics and confirms the WULF/IREN pivot is the industry's. |
+| Regulatory drift | + | major | GENIUS rules November, CLARITY progress, an SEC blockchain plan. Net constructive. |
+| Dollar and oil | − | major | A stronger dollar on hawkish repricing plus oil near $90 feeding the inflation impulse. |
+| Seasonality | ± | secondary | Negative Septembers 2017–22, positive 2023–25. Weakening, not reliable. |
+| Quarterly options expiry | ± | secondary | End-September expiry concentrates positioning and exaggerates the move either way. |
+| Gold correlation | − | secondary | Gold crashed after its rally. If the debasement trade unwinds, bitcoin does not sit it out. |
 
 **Levels.** Support $76,391 (today's low) / $76,350, then $72,000, then **$69,468 (200DMA)** and the
 $66–67k June–July shelf; Aug low $62,210. Resistance $80,000, Aug high $81,480, then $86–90k.
