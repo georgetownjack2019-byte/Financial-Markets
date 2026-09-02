@@ -9,8 +9,9 @@ allowed-tools: Bash, Read, Write, WebSearch, WebFetch, mcp__Notion__notion-fetch
 Recap the session that just closed, then project the next trading day and the
 week ahead. Push to Notion.
 
-Read `.claude/watchlist.md` for the names and `.claude/notion-push-rules.md`
-for the destination, formatting and data-integrity rules. Both are binding.
+Read `.claude/watchlist.md` for the names, `.claude/data-sources.md` for which
+provider serves which field, and `.claude/notion-push-rules.md` for the
+destination, formatting and data-integrity rules. All three are binding.
 
 Session override (if given): `$ARGUMENTS`
 
@@ -22,17 +23,29 @@ Session override (if given): `$ARGUMENTS`
 
 ## 1 · Data
 
-Bootstrap: `pip install -q yfinance pandas numpy` if imports fail.
+Bootstrap: `pip install -q yfinance pandas numpy` if imports fail — yfinance is
+the fallback path, not the primary one. **Primary fetch is FMP**;
+`.claude/data-sources.md` is binding on which endpoint serves which field and
+on what FMP will not serve.
 
 - Index board: S&P 500, Nasdaq, Dow, Russell 2000 — close and % change.
+  FMP `quote` on `^GSPC`, `^IXIC`, `^DJI`, `^RUT`.
 - All 11 S&P sectors (XLE, XLK, XLF, XLV, XLY, XLP, XLI, XLB, XLRE, XLU, XLC)
-  — % change, ranked.
+  — % change, ranked. FMP `quote`, one call per ETF.
 - Cross-asset: 10Y and 5Y yields (level **and** bp change), DXY, VIX, gold,
-  WTI/Brent, BTC, ETH.
-- Every watchlist name: close, % change, volume vs 20d.
-- Economic calendar for the coming ~week, and watchlist earnings due ~1 week.
+  WTI/Brent, BTC, ETH. VIX (`^VIX`), gold (`GCUSD`), Brent (`BZUSD`) and crypto
+  (`BTCUSD`/`ETHUSD`) from FMP; **yields, DXY and WTI from yfinance** — FMP has
+  no endpoint for them on this plan, and the ETF proxies are not the same level.
+- Every watchlist name: close, % change, volume vs 20d. FMP `quote` +
+  `historical-price-eod/full`, with the three European names on yfinance.
+- Economic calendar for the coming ~week, and watchlist earnings due ~1 week —
+  FMP `economic-calendar` and `earnings-calendar`, one call each for the whole
+  window, then filtered to the watchlist.
 
 Yields move in **basis points** — report `+80bp to 4.80%`, never `+0.80%`.
+
+Mark any yfinance-sourced row in the appendix tables with `†` after the ticker
+and define the marker under the table, per `.claude/data-sources.md`.
 
 ## 2 · Sections, in this order
 
@@ -74,4 +87,9 @@ what would falsify the bias.
 
 ## 3 · Push
 
-Per `.claude/notion-push-rules.md`. Report the title and URL.
+Per `.claude/notion-push-rules.md`. Close the page with the source footer from
+`.claude/data-sources.md` (providers, the fallback tickers, and the as-of
+timestamp) above the standard disclaimer.
+
+Report the title, the URL, and the one-line provider tally:
+`FMP <n> · yfinance <n> (<n> EU + <n> fallback) · failed <n>`.

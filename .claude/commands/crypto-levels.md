@@ -9,8 +9,9 @@ allowed-tools: Bash, Read, Write, mcp__Notion__notion-fetch, mcp__Notion__notion
 Mechanical level sheet for BTC and ETH. Purely rule-driven — no narrative, no
 news, no opinion. Push to Notion.
 
-Read `.claude/notion-push-rules.md` for destination, formatting and
-data-integrity rules. Binding.
+Read `.claude/data-sources.md` for which provider serves which field and
+`.claude/notion-push-rules.md` for destination, formatting and data-integrity
+rules. Both are binding.
 
 Extra assets (if given): `$ARGUMENTS` — default is `BTC-USD` and `ETH-USD`.
 
@@ -23,8 +24,19 @@ Extra assets (if given): `$ARGUMENTS` — default is `BTC-USD` and `ETH-USD`.
 
 ## 1 · Data
 
-Bootstrap: `pip install -q yfinance pandas numpy` if imports fail. Daily bars,
-≥250 sessions (200-MA) plus weekly bars for the 20-week MA.
+Bootstrap: `pip install -q yfinance pandas numpy` if imports fail — yfinance is
+the fallback path, not the primary one.
+
+**Primary fetch is FMP**: `quote` for spot and
+`historical-price-eod/full` over ~18 months for the bar series — daily bars,
+≥250 sessions (200-MA), resampled to weekly for the 20-week MA. FMP spells the
+pairs **without the dash** (`BTCUSD`, `ETHUSD`) while this command's arguments
+and headings use the watchlist spelling (`BTC-USD`); map on the way in and
+report the watchlist spelling.
+
+An extra asset passed in `$ARGUMENTS` that FMP will not serve falls back to
+yfinance for that asset only. Crypto trades continuously, so state the exact
+as-of timestamp — there is no "close" to lean on.
 
 ## 2 · Per asset
 
@@ -65,4 +77,8 @@ over from yesterday's page.
 
 ## 3 · Push
 
-Per `.claude/notion-push-rules.md`. Report the title and URL.
+Per `.claude/notion-push-rules.md`. Close the page with the source footer from
+`.claude/data-sources.md` (provider per asset and the as-of timestamp) above the
+standard disclaimer.
+
+Report the title, the URL, and the provider used per asset.

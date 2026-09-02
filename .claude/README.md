@@ -13,7 +13,25 @@ All five publish as child pages of **DAILY BRIEFINGS**
 
 Shared configuration:
 - `.claude/watchlist.md` — the name list and groups. Edit here; all commands follow.
+- `.claude/data-sources.md` — which provider serves which field, symbol mapping,
+  reconciliation and source labelling.
 - `.claude/notion-push-rules.md` — destination page id, formatting, data-integrity rules.
+
+## Data providers
+
+**FMP is the source of record; yfinance is the fallback and the history
+backstop.** The four data commands fetch quotes, bars, analyst targets, ratings
+and the earnings / dividend / macro calendars from FMP, and fall back to
+yfinance per name.
+
+yfinance still serves, by necessity:
+- `MC.PA`, `RMS.PA`, `SHELL.AS` — not available on the current FMP plan (402).
+- Treasury yields, DXY, WTI and index futures — no endpoint on this plan.
+- Any FMP call that fails, and options-derived IV / put-call.
+
+Full endpoint map, symbol mapping and the labelling rules are in
+`.claude/data-sources.md`. Every published page names its providers in the
+footer, so a report is never silently sourced from the fallback.
 
 ## API key (FMP)
 

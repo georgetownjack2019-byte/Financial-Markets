@@ -9,8 +9,9 @@ allowed-tools: Bash, Read, Write, WebSearch, WebFetch, mcp__Notion__notion-fetch
 Generate today's pre-open entry briefing over the full watchlist, then push it
 to Notion.
 
-Read `.claude/watchlist.md` for the names and `.claude/notion-push-rules.md`
-for the destination, formatting and data-integrity rules. Both are binding.
+Read `.claude/watchlist.md` for the names, `.claude/data-sources.md` for which
+provider serves which field, and `.claude/notion-push-rules.md` for the
+destination, formatting and data-integrity rules. All three are binding.
 
 Scope override (if given): `$ARGUMENTS`
 
@@ -22,19 +23,30 @@ Scope override (if given): `$ARGUMENTS`
 
 ## 1 · Data
 
-Bootstrap once: `pip install -q yfinance pandas numpy` if the imports fail.
+Bootstrap once: `pip install -q yfinance pandas numpy` if the imports fail —
+yfinance is the fallback path, not the primary one.
 
-Pull with yfinance, daily bars, at least 250 sessions so the 200-MA is real:
+**Primary fetch is FMP** (`.claude/data-sources.md` is binding on which endpoint
+serves which field): `quote` for the live line, `historical-price-eod/full` over
+~18 months for the bar series (at least 250 sessions so the 200-MA is real),
+`price-target-consensus` + `grades-consensus` + `ratings-snapshot` for the
+analyst block, and the three calendar endpoints once each for §5. The three
+European names (`MC.PA`, `RMS.PA`, `SHELL.AS`) and any failed call fall back to
+yfinance per name. Derive, per name:
 
 - Last price, previous close, today's open.
 - MA20 / MA50 / MA200 (simple, daily close) → `vs20MA`, `vs50MA`, `vs200MA` as
-  signed % of last price against each.
+  signed % of last price against each. FMP's `quote` carries `priceAvg50` and
+  `priceAvg200` directly; compute MA20 from the bar series. If a quote average
+  and the series disagree by more than 1%, trust the series.
 - RSI(14), Wilder smoothing.
 - ATR(14) as % of price.
 - Volume vs 20-day average volume → `Vol/20d` as `1.16x`.
 - Candle direction: `up` if close > open, else `down`.
 - Stack: `bull` if price > MA50 > MA200, `bear` if price < MA50 < MA200, else `mixed`.
-- Analyst data: consensus target, target low, target high, number of analysts.
+- Analyst data: consensus target, target low, target high, number of analysts —
+  `price-target-consensus` for the three levels, `grades-consensus` for the
+  analyst count and the buy/hold/sell split.
 - `Dip-buy` = the recent swing-low support level (20-day low lifted by ~0.3×ATR).
 - `MoS (−30%)` = consensus target × 0.70 — the margin-of-safety price.
 - `Tgt hit%` = share of the trailing analyst targets that were actually reached
@@ -42,8 +54,10 @@ Pull with yfinance, daily bars, at least 250 sessions so the 200-MA is real:
   Fewer than 5 observations → mark with `*` (e.g. `100%* (2)`) so a thin sample
   is never read as a strong signal. No history → `n/a`.
 
-Prices are Yahoo Finance, ~15-min delayed. Say so on the page — do not present
-them as real-time.
+Label the sources per `.claude/data-sources.md`: FMP for most names, Yahoo
+(~15-min delayed) for the European names and any fallback. Never present the
+page as real-time, and never mix providers inside one derived figure — an MA,
+an RSI or an ATR comes from one provider's bar series end to end.
 
 ## 2 · Backdrop block
 
@@ -58,7 +72,11 @@ Open the page with a `>` quote block, exactly these five lines:
 > **Sentiment backdrop:** HY credit spread <n> bps.
 ```
 
-Then the italic line: `_All prices via Yahoo Finance (~15-min delayed) — NOT real-time._`
+The backdrop block is mixed-source: FMP serves `^GSPC`, `^IXIC`, `^DJI`,
+`^N225`, `^HSI`, `^VIX` and the E-mini S&P (`ESUSD`); yfinance serves Shanghai
+(`000001.SS`), the Nasdaq future, the 10Y (`^TNX`) and DXY (`DX-Y.NYB`), none of
+which this FMP plan carries. Follow the block with the italic line:
+`_Backdrop: US, Japan, HK and S&P futures via FMP; Shanghai, Nasdaq futures, 10Y and DXY via Yahoo Finance (~15-min delayed). NOT real-time._`
 
 ## 3 · Master table
 
@@ -69,6 +87,10 @@ Tgt hit% · vs20MA · vs50MA · vs200MA · RSI · ATR% (14d) · Candle · Stack 
 Vol/20d · Light`
 
 Sort GREEN first, then YELLOW, then RED; within a light, by price descending.
+
+Mark a yfinance-sourced row with `†` after the ticker, and a price the two
+providers disagree on by more than 2% with `‡`, defining both markers under the
+table. Both markers are specified in `.claude/data-sources.md`.
 
 ## 4 · Traffic light
 
@@ -89,7 +111,7 @@ gets four bullets:
   them (<hit%>, n=<N>)." when hit% < 50%.>
 - **Dip-buy zone \~\$<x>** · buy zone \$<lo>–\$<hi> · stop below \$<stop>
 - _Sentiment: <Bullish|Neutral|Bearish> · <rating> · <±n>% PT · rev +<u>/−<d> · insider B<n>/S<n> · P/C <x.xx> · IV <n>%_
-- _data: Yahoo (~15-min delayed) · news: <headline 1 (source)> ; <headline 2 (source)>_
+- _data: <FMP | Yahoo (~15-min delayed)> · news: <headline 1 (source)> ; <headline 2 (source)>_
 ```
 
 YELLOW gets the first bullet plus the level it needs to trigger. RED gets one
@@ -113,4 +135,9 @@ line: why it's out and what would put it back in play.
 
 ## 6 · Push
 
-Per `.claude/notion-push-rules.md`. Report the title and URL.
+Per `.claude/notion-push-rules.md`. Close the page with the source footer from
+`.claude/data-sources.md` (providers, the fallback tickers, and the as-of
+timestamp) above the standard disclaimer.
+
+Report the title, the URL, and the one-line provider tally:
+`FMP <n> · yfinance <n> (<n> EU + <n> fallback) · failed <n>`.
