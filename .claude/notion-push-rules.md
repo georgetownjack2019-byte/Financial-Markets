@@ -50,6 +50,18 @@ Any page containing price levels, entries or targets ends with:
 
 `_Research and mechanical levels only — not personalized investment advice._`
 
+## Pushing a long page
+
+A full watchlist briefing runs ~60 KB and does not go through
+`notion-create-pages` in one call. Create the page with the first section, then
+append the rest with `notion-update-page` (`command: "insert_content"`,
+`position: {"type": "end"}`), one `##` section per call. Sections are the split
+point — never cut a `<table>` across two calls.
+
+`₿` and other currency signs are rejected as page icons — Notion only accepts
+emoji there. Keep the sign in the title and pick an emoji for the icon
+(`/crypto-levels` uses `🪙`).
+
 ## After pushing
 
 Report the page title and URL. Nothing else.
