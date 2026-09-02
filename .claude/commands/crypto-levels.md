@@ -23,8 +23,23 @@ Extra assets (if given): `$ARGUMENTS` — default is `BTC-USD` and `ETH-USD`.
 
 ## 1 · Data
 
-Bootstrap: `pip install -q yfinance pandas numpy` if imports fail. Daily bars,
-≥250 sessions (200-MA) plus weekly bars for the 20-week MA.
+Real-time spot and 3 years of daily bars from the shared layer:
+
+```bash
+python3 scripts/market_data.py crypto --symbols BTC-USD,ETH-USD --out out/crypto.json
+```
+
+Crypto quotes come straight from FMP (`BTC-USD` → `BTCUSD`), so spot is live,
+not a delayed close, and `source` on every row reads `FMP real-time`. The rows
+carry `price`, `ma20` / `ma50` / `ma200`, `atr14`, `atr_pct`, `dip_buy` and
+`sessions`. The 20-week MA and the 7/20-day range are not in the payload —
+derive them in the same script run from the daily bars
+(`market_data.get_history("BTCUSD")`): the 20-week MA is the mean of the last
+100 daily closes' weekly resample, and the range rows are plain min/max over
+the trailing 7 and 20 bars.
+
+State the `as_of` timestamp (Eastern) on the page. Crypto trades continuously,
+so a level sheet is only meaningful next to the minute it was cut.
 
 ## 2 · Per asset
 

@@ -22,15 +22,31 @@ Session override (if given): `$ARGUMENTS`
 
 ## 1 · Data
 
-Bootstrap: `pip install -q yfinance pandas numpy` if imports fail.
+From the shared real-time layer (`scripts/market_data.py`, FMP-backed):
 
-- Index board: S&P 500, Nasdaq, Dow, Russell 2000 — close and % change.
-- All 11 S&P sectors (XLE, XLK, XLF, XLV, XLY, XLP, XLI, XLB, XLRE, XLU, XLC)
-  — % change, ranked.
-- Cross-asset: 10Y and 5Y yields (level **and** bp change), DXY, VIX, gold,
-  WTI/Brent, BTC, ETH.
-- Every watchlist name: close, % change, volume vs 20d.
-- Economic calendar for the coming ~week, and watchlist earnings due ~1 week.
+```bash
+python3 scripts/market_data.py watchlist --out out/watchlist.json
+python3 scripts/market_data.py backdrop  --out out/backdrop.json
+python3 scripts/market_data.py crypto    --out out/crypto.json
+python3 scripts/market_data.py calendar --days 10 --out out/calendar.json
+python3 scripts/market_data.py watchlist --no-targets \
+  --symbols XLE,XLK,XLF,XLV,XLY,XLP,XLI,XLB,XLRE,XLU,XLC,IWM,GLD,USO,BNO \
+  --out out/sectors.json
+```
+
+- Index board: S&P 500, Nasdaq, Dow (`backdrop.json`), Russell 2000 (`IWM`).
+- All 11 S&P sectors — `change_pct` from `sectors.json`, ranked.
+- Cross-asset: 10Y and 2Y from `backdrop.json` (`ust10y`, `ust2y` — these are
+  Treasury constant-maturity rates, dated; take the bp change against the prior
+  session's row), DXY (`UUP` proxy — say so), VIX, gold (`GLD`), oil
+  (`USO` / `BNO`), BTC and ETH from `crypto.json`.
+- Every watchlist name: `price`, `change_pct`, `vol_ratio` from `watchlist.json`.
+- Watchlist earnings and ex-dividends from `calendar.json`.
+
+This is a post-close report, so the live print and the session close are the
+same number — but still state the `as_of` timestamp and the source, and carry
+through the `†` / `‡` source markers described in `/morning-briefing` §1 for any
+row that is delayed or ADR-proxied.
 
 Yields move in **basis points** — report `+80bp to 4.80%`, never `+0.80%`.
 

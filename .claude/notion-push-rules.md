@@ -34,7 +34,13 @@ Never write into the parent page itself.
   round to a "nicer" figure, or carry a number over from a previous day's
   report.
 - If a field is unavailable, print `—`. Do not guess and do not omit the row.
-- State the as-of timestamp and the source in the footer of every page.
+- State the as-of timestamp and the source in the footer of every page. Prices
+  are real-time via Financial Modeling Prep — say so, with the actual minute,
+  and never describe them as delayed or as a prior close when they are not.
+- A row whose data came from a fallback is marked in place: `†` for a
+  ~15-min-delayed native listing, `‡` for a US ADR proxy quoted in USD. Footnote
+  every marker the page uses, naming the proxy. Never quietly present a proxy as
+  the native line.
 - If the data fetch fails for more than ~20% of the watchlist, stop and report
   the failure instead of publishing a half-empty page.
 

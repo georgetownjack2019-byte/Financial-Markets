@@ -22,28 +22,52 @@ Scope override (if given): `$ARGUMENTS`
 
 ## 1 · Data
 
-Bootstrap once: `pip install -q yfinance pandas numpy` if the imports fail.
+All numbers come from the shared real-time layer, `scripts/market_data.py`
+(Financial Modeling Prep, keyed by `FMP_API_KEY`). No stdlib-external
+dependency is required; `yfinance` is optional and only used as a fallback.
 
-Pull with yfinance, daily bars, at least 250 sessions so the 200-MA is real:
+```bash
+python3 scripts/market_data.py watchlist --out out/watchlist.json
+python3 scripts/market_data.py backdrop  --out out/backdrop.json
+python3 scripts/market_data.py calendar --days 90 --out out/calendar.json
+```
 
-- Last price, previous close, today's open.
-- MA20 / MA50 / MA200 (simple, daily close) → `vs20MA`, `vs50MA`, `vs200MA` as
-  signed % of last price against each.
-- RSI(14), Wilder smoothing.
-- ATR(14) as % of price.
-- Volume vs 20-day average volume → `Vol/20d` as `1.16x`.
-- Candle direction: `up` if close > open, else `down`.
-- Stack: `bull` if price > MA50 > MA200, `bear` if price < MA50 < MA200, else `mixed`.
-- Analyst data: consensus target, target low, target high, number of analysts.
-- `Dip-buy` = the recent swing-low support level (20-day low lifted by ~0.3×ATR).
-- `MoS (−30%)` = consensus target × 0.70 — the margin-of-safety price.
-- `Tgt hit%` = share of the trailing analyst targets that were actually reached
-  within their horizon, with the sample size in parentheses: `31% (13)`.
-  Fewer than 5 observations → mark with `*` (e.g. `100%* (2)`) so a thin sample
-  is never read as a strong signal. No history → `n/a`.
+Each watchlist row already carries, computed off 3 years of daily bars with the
+live print spliced in as today's in-progress bar:
 
-Prices are Yahoo Finance, ~15-min delayed. Say so on the page — do not present
-them as real-time.
+- `price`, `open`, `previous_close`, `day_high`, `day_low`, `change_pct`, `volume`.
+- `ma20` / `ma50` / `ma200` and `vs20ma` / `vs50ma` / `vs200ma` as signed % of
+  price against each.
+- `rsi14` (Wilder), `atr14` and `atr_pct`.
+- `vol_ratio` → render as `1.16x`.
+- `candle` (`up` / `down`), `stack` (`bull` / `bear` / `mixed`).
+- `target_low` / `target_consensus` / `target_high`, `rating`, `analysts`.
+- `dip_buy` — 20-day low lifted by 0.3×ATR.
+- `mos_30` — consensus × 0.70, the margin-of-safety price.
+- `hit_pct` / `sample` — the share of analyst targets actually reached inside a
+  365-day horizon, scored only on targets whose horizon has fully elapsed.
+  Render as `31% (13)`; fewer than 5 observations gets a `*` (`100%* (2)`) so a
+  thin sample is never read as a strong signal; `hit_pct: null` renders `n/a`.
+- `source` — the provenance of that row (see below).
+- `currency` — `USD` or `EUR`. Print the native symbol; never convert.
+
+### Sourcing and honesty
+
+`source` is one of three values and the page must reflect which one it was:
+
+| `source` | Meaning | How to label the row |
+|---|---|---|
+| `FMP real-time` | live quote | no marker |
+| `yfinance (~15-min delayed)` | native listing, delayed | mark the row `†` |
+| `FMP real-time (ADR proxy)` | US ADR standing in for a listing FMP's plan does not cover — `proxy_symbol` names it, price is USD | mark the row `‡` and name the proxy in the footnote |
+
+Footnote whichever markers appear, e.g.
+`_† ~15-min delayed. ‡ US ADR proxy in USD (MC.PA → LVMUY) — FMP's plan does not quote the Paris/Amsterdam lines._`
+
+A field that resolved to nothing arrives as `null` — print `—`. Never
+substitute, extrapolate or carry a value over from a previous day's page. If
+`unresolved` in the JSON exceeds 20% of the watchlist, stop and report the
+failure instead of publishing.
 
 ## 2 · Backdrop block
 
@@ -58,7 +82,16 @@ Open the page with a `>` quote block, exactly these five lines:
 > **Sentiment backdrop:** HY credit spread <n> bps.
 ```
 
-Then the italic line: `_All prices via Yahoo Finance (~15-min delayed) — NOT real-time._`
+Fill it from `out/backdrop.json`. Three of those fields need care:
+
+- `nasdaq_futures` has no series on this FMP plan — print `—`, do not
+  substitute QQQ.
+- `shanghai` and `dxy` fall back to a proxy (`ASHR`, `UUP`). When
+  `proxy: true`, name it inline: `Shanghai (ASHR proxy) <lvl> (<±%>)`.
+- `hy_spread_bps` has no OAS series on this plan — print `—`. Never estimate it.
+
+Then the italic line, with the real timestamp from `as_of` converted to
+Eastern: `_Prices real-time via Financial Modeling Prep, as of <HH:MM ET, DD Mon YYYY>._`
 
 ## 3 · Master table
 
@@ -89,7 +122,7 @@ gets four bullets:
   them (<hit%>, n=<N>)." when hit% < 50%.>
 - **Dip-buy zone \~\$<x>** · buy zone \$<lo>–\$<hi> · stop below \$<stop>
 - _Sentiment: <Bullish|Neutral|Bearish> · <rating> · <±n>% PT · rev +<u>/−<d> · insider B<n>/S<n> · P/C <x.xx> · IV <n>%_
-- _data: Yahoo (~15-min delayed) · news: <headline 1 (source)> ; <headline 2 (source)>_
+- _data: FMP real-time <HH:MM ET> · news: <headline 1 (source)> ; <headline 2 (source)>_
 ```
 
 YELLOW gets the first bullet plus the level it needs to trigger. RED gets one

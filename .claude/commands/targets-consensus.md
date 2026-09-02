@@ -20,22 +20,29 @@ Scope override (if given): `$ARGUMENTS`
 - Title: `📊 Targets & Consensus — complete watchlists <DDMM> — <Ddd DD Mon YYYY>`
   (the `<DDMM>` tag matches the watchlist snapshot, e.g. `3108`)
 - Icon: `📊`
-- Intro line: `Analyst price targets, consensus upside, fair-value estimate, dip-buy level, target hit-rate and ATR for the <n>-name **complete watchlists <DDMM>**. Prices/targets via yfinance, <DD Mon YYYY>. Not advice.`
+- Intro line: `Analyst price targets, consensus upside, fair-value estimate, dip-buy level, target hit-rate and ATR for the <n>-name **complete watchlists <DDMM>**. Prices and targets real-time via Financial Modeling Prep, <HH:MM ET, DD Mon YYYY>. Not advice.`
 
 ## 1 · Data
 
-Bootstrap: `pip install -q yfinance pandas numpy matplotlib` if imports fail.
+```bash
+python3 scripts/market_data.py watchlist --out out/watchlist.json
+```
 
-Per name:
-- `Price` — last close, native currency (€ for MC.PA / RMS.PA / SHELL.AS).
-- `Consensus` — mean analyst target.
-- `Upside` — signed % from price to consensus.
-- `Tgt High` — highest analyst target.
-- `Fair val` — DCF/analyst fair-value estimate. Unavailable → `—`.
-- `Dip-buy` — 20-day low lifted by ~0.3×ATR. Above the current price → `—`.
-- `Hit%` — historical target hit-rate; thin/no history → `—`.
-- `ATR%` — ATR(14) as % of price.
-- `#An` — number of contributing analysts.
+`pip install -q matplotlib` for the charts if the import fails; the data layer
+itself needs nothing beyond the standard library.
+
+Per name, straight off the row:
+- `Price` — `price`, live, in `currency` (€ for MC.PA / RMS.PA / SHELL.AS when
+  the native line resolved; a `‡` ADR row is USD — mark it, do not convert).
+- `Consensus` — `target_consensus`.
+- `Upside` — `consensus_upside`, signed.
+- `Tgt High` — `target_high` (`high_upside` for its upside).
+- `Fair val` — not on this FMP plan → `—` for every name. Do not substitute
+  consensus for it.
+- `Dip-buy` — `dip_buy`. Above the current price → `—`.
+- `Hit%` — `hit_pct` with `sample`; `null` → `—`.
+- `ATR%` — `atr_pct`.
+- `#An` — `analysts`.
 
 Keep a negative upside negative (`-24.0%`) — a consensus below spot is a
 signal, not an error to correct. A nonsensical fair value (e.g. negative)
