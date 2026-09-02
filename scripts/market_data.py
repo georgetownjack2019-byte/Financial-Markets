@@ -589,6 +589,9 @@ def get_backdrop() -> dict:
             "price": q.get("price") if q else None,
             "change_pct": q.get("changePercentage") if q else None,
             "name": q.get("name") if q else None,
+            # The session the print belongs to — a report run after the close
+            # must not caption today's close as the prior close.
+            "timestamp": q.get("timestamp") if q else None,
         }
 
     rates = fmp("treasury-rates",

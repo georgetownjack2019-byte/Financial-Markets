@@ -100,8 +100,25 @@ vix_band = "low" if vix < 15 else "moderate" if vix < 22 else "elevated"
 risk = sum(1 for k in ("sp500", "nasdaq", "dow", "nikkei") if (B[k]["change_pct"] or 0) < 0)
 tone = "risk-off" if risk >= 3 else "risk-on" if risk <= 1 else "mixed / neutral"
 
+# Caption the US index line by the session its print belongs to, so a run
+# after the close does not present today's close as yesterday's.
+sp_ts = B["sp500"].get("timestamp")
+if sp_ts:
+    sp_when = datetime.fromtimestamp(sp_ts, timezone.utc).astimezone(ET)
+    # The print's own hour is the last tick the feed stamped, which can sit a
+    # minute or two before the bell — whether that session has closed is a
+    # question about now, not about the tick.
+    if sp_when.date() < as_of.date():
+        us_label = "US prior close"
+    elif as_of.hour >= 16:
+        us_label = f"US close {sp_when.strftime('%a %d %b')}"
+    else:
+        us_label = f"US session (live {sp_when.strftime('%H:%M ET')})"
+else:
+    us_label = "US last print"
+
 w(f"> **Backdrop: {tone}.**")
-w(f"> US prior close — S&P 500 {bd('sp500')} · Nasdaq {bd('nasdaq')} · Dow {bd('dow')}.")
+w(f"> {us_label} — S&P 500 {bd('sp500')} · Nasdaq {bd('nasdaq')} · Dow {bd('dow')}.")
 w(f"> Asia overnight — Nikkei {bd('nikkei')} · Hang Seng {bd('hang_seng')} · Shanghai {bd('shanghai')}.")
 w(f"> US futures — S&P fut {bd('sp_futures')} · Nasdaq fut —.")
 w(f"> Rates & risk — 10Y {B['ust10y']['value']:.2f}% ({B['ust10y']['change_bp']:+.0f}bp) · "
