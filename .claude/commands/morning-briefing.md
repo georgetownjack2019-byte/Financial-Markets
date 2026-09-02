@@ -32,6 +32,11 @@ python3 scripts/market_data.py backdrop  --out out/backdrop.json
 python3 scripts/market_data.py calendar --days 90 --out out/calendar.json
 ```
 
+`scripts/render_morning.py` turns those three files plus `out/sentiment.json`
+(see §4) into the page body exactly as specified below — traffic lights, tables,
+footnotes and all. Run it, read what it produced, then push that. Write the page
+by hand only when you are deliberately departing from this spec.
+
 Each watchlist row already carries, computed off 3 years of daily bars with the
 live print spliced in as today's in-progress bar:
 
@@ -124,6 +129,18 @@ gets four bullets:
 - _Sentiment: <Bullish|Neutral|Bearish> · <rating> · <±n>% PT · rev +<u>/−<d> · insider B<n>/S<n> · P/C <x.xx> · IV <n>%_
 - _data: FMP real-time <HH:MM ET> · news: <headline 1 (source)> ; <headline 2 (source)>_
 ```
+
+The last two bullets come from one more call, run over the GREEN names only:
+
+```bash
+python3 scripts/market_data.py sentiment --symbols <green tickers> --out out/sentiment.json
+```
+
+It returns `news` (headline, publisher, timestamp), `ratings_revised_up` /
+`ratings_revised_down` (one-month drift in the analyst grade counts) and
+`insider_buys_90d` / `insider_sells_90d`. **Put/call ratio and implied
+volatility have no series on this FMP plan — print `—` for both.** `<±n>% PT`
+is `consensus_upside` off the watchlist row.
 
 YELLOW gets the first bullet plus the level it needs to trigger. RED gets one
 line: why it's out and what would put it back in play.

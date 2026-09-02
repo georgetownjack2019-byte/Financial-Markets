@@ -38,8 +38,14 @@ derive them in the same script run from the daily bars
 100 daily closes' weekly resample, and the range rows are plain min/max over
 the trailing 7 and 20 bars.
 
+`scripts/render_crypto.py` computes all of that and prints the page body in the
+shape specified below. Run it, read the output, then push it.
+
 State the `as_of` timestamp (Eastern) on the page. Crypto trades continuously,
 so a level sheet is only meaningful next to the minute it was cut.
+
+Notion rejects `₿` as a page icon — it is a currency character, not an emoji.
+Keep `₿` in the title and set the icon to `🪙`.
 
 ## 2 · Per asset
 

@@ -372,7 +372,12 @@ def indicators(bars: list[dict]) -> dict:
         stack = None
 
     last = bars[-1]
-    low20 = min(b["low"] for b in bars[-20:]) if len(bars) >= 20 else None
+
+    def window(n, key, fn):
+        return fn(b[key] for b in bars[-n:]) if len(bars) >= n else None
+
+    low20, high20 = window(20, "low", min), window(20, "high", max)
+    low7, high7 = window(7, "low", min), window(7, "high", max)
 
     return {
         "ma20": ma20, "ma50": ma50, "ma200": ma200,
@@ -384,7 +389,13 @@ def indicators(bars: list[dict]) -> dict:
         "candle": ("up" if last["close"] > last["open"] else "down")
                   if last.get("open") else None,
         "stack": stack,
+        "low7": low7, "high7": high7, "low20": low20, "high20": high20,
+        # Entry, stop and target are one mechanical family across the reports:
+        # entry off the 20-day low lifted by 0.3xATR, stop half an ATR below
+        # that low, target two ATR above entry.
         "dip_buy": (low20 + 0.3 * atr) if (low20 is not None and atr) else None,
+        "stop": (low20 - 0.5 * atr) if (low20 is not None and atr) else None,
+        "target": (low20 + 2.3 * atr) if (low20 is not None and atr) else None,
         "sessions": len(bars),
     }
 
@@ -455,6 +466,61 @@ def target_hit_rate(symbol: str, bars: list[dict], horizon_days: int = 365) -> d
     if total == 0:
         return {"hit_pct": None, "sample": 0}
     return {"hit_pct": hits / total * 100, "sample": total}
+
+
+# --------------------------------------------------------------- news, flow
+
+def get_news(symbol: str, limit: int = 3) -> list[dict]:
+    """Recent headlines for the per-name news line. Empty list, never a guess."""
+    items = fmp("news/stock", symbols=ADR_PROXY.get(symbol, symbol), limit=limit) or []
+    return [{
+        "date": (i.get("publishedDate") or "")[:16],
+        "publisher": i.get("publisher") or i.get("site"),
+        "title": i.get("title"),
+        "url": i.get("url"),
+    } for i in items if i.get("title")]
+
+
+def get_sentiment(symbol: str) -> dict:
+    """Rating, one-month ratings drift and insider flow.
+
+    Put/call ratio and implied volatility have no series on this FMP plan, so
+    they come back None and the report prints an em dash for them.
+    """
+    target = ADR_PROXY.get(symbol, symbol)
+    hist = fmp("grades-historical", symbol=target, limit=2) or []
+    up = down = None
+    if len(hist) >= 2:
+        cur, prev = hist[0], hist[1]
+
+        def bulls(g):
+            return (g.get("analystRatingsStrongBuy") or 0) + (g.get("analystRatingsBuy") or 0)
+
+        def bears(g):
+            return (g.get("analystRatingsSell") or 0) + (g.get("analystRatingsStrongSell") or 0)
+
+        up, down = max(bulls(cur) - bulls(prev), 0), max(bears(cur) - bears(prev), 0)
+
+    trades = fmp("insider-trading/search", symbol=target, limit=100) or []
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=90)).date().isoformat()
+    buys = sells = 0
+    for t in trades:
+        if (t.get("transactionDate") or "") < cutoff:
+            continue
+        kind = (t.get("acquisitionOrDisposition") or "").upper()
+        if kind == "A":
+            buys += 1
+        elif kind == "D":
+            sells += 1
+
+    return {
+        "ratings_revised_up": up,
+        "ratings_revised_down": down,
+        "insider_buys_90d": buys,
+        "insider_sells_90d": sells,
+        "put_call": None,   # not on this plan
+        "implied_vol": None,  # not on this plan
+    }
 
 
 # --------------------------------------------------------------------- rows
@@ -632,6 +698,11 @@ def main(argv: list[str] | None = None) -> int:
     p_cal.add_argument("--symbols")
     p_cal.add_argument("--out")
 
+    p_s = sub.add_parser("sentiment", help="headlines, ratings drift, insider flow")
+    p_s.add_argument("--symbols", required=True)
+    p_s.add_argument("--news", type=int, default=3)
+    p_s.add_argument("--out")
+
     sub.add_parser("selftest", help="check key, connectivity and one full row")
 
     args = parser.parse_args(argv)
@@ -681,6 +752,17 @@ def main(argv: list[str] | None = None) -> int:
                 "days": args.days,
                 "events": get_calendar(symbols, args.days),
             }, args.out)
+
+        elif args.cmd == "sentiment":
+            symbols = [s.strip() for s in args.symbols.split(",") if s.strip()]
+            payload = {"as_of": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+                bundles = pool.map(
+                    lambda t: {"ticker": t, "news": get_news(t, args.news),
+                               **get_sentiment(t)},
+                    symbols)
+            payload["rows"] = list(bundles)
+            _emit(payload, args.out)
 
         elif args.cmd == "selftest":
             api_key()
