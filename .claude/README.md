@@ -14,6 +14,11 @@ All five publish as child pages of **DAILY BRIEFINGS**
 Shared configuration:
 - `.claude/watchlist.md` — the name list and groups. Edit here; all commands follow.
 - `.claude/notion-push-rules.md` — destination page id, formatting, data-integrity rules.
+- `.claude/data-sources.md` — which market-data sources actually work, and the
+  FMP endpoint list. Read this before writing data-pull code; `yfinance` is
+  blocked from web sessions and FMP's `/api/v3/` path is retired.
+
+Test both sources with `python scripts/test_data_sources.py`.
 
 ## API key (FMP)
 
