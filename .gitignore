@@ -1,0 +1,14 @@
+# Secrets — never commit
+.env
+.env.local
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Scratch
+*.tmp
+out/
