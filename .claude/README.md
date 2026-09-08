@@ -1,4 +1,4 @@
-# Daily report commands
+# Report commands
 
 | Command | Report | Cadence |
 |---|---|---|
@@ -7,9 +7,14 @@
 | `/crypto-levels` | ₿ Crypto Levels — mechanical BTC/ETH entry, stop, target | daily |
 | `/targets-consensus` | 📊 Targets & Consensus — analyst targets across the full watchlist | weekly / on demand |
 | `/push-daily` | Push arbitrary already-written content to the same Notion page | ad hoc |
+| `/company-thesis` | 🏢 Equity Research Pack — Initiate · Thesis · DCF · Comps, one name | on demand |
 
-All five publish as child pages of **DAILY BRIEFINGS**
+The first five publish as child pages of **DAILY BRIEFINGS**
 (`Investment Research 投研报告 / DAILY BRIEFINGS`).
+
+`/company-thesis` is the exception: it publishes under **4. Company Reports
+个股研究** (`Investment Research 投研报告 / 4. Company Reports 个股研究`), one
+page per name, and takes a ticker rather than reading the watchlist.
 
 Shared configuration:
 - `.claude/watchlist.md` — the name list and groups. Edit here; all commands follow.
