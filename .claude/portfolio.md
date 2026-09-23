@@ -11,14 +11,17 @@ reads it, so the report follows automatically.
 | Ticker | Shares | Avg cost | Lots | Opened |
 |---|---|---|---|---|
 | ORCL | 100 | 154.00 | 50 @ 155.00 · 50 @ 153.00 | Sep 2026 |
-| CRCL | 50 | 94.50 | 50 @ 94.50 | Sep 2026 |
+| CRCL | 80 | 83.00 | 80 @ 83.00 | Sep 2026 |
+| LNG | 50 | 267.00 | 50 @ 267.00 | Sep 2026 |
+
+Book cost **$35,390**. Weights at the 23 Sep close: ORCL 40.8%, LNG 38.6%,
+CRCL 20.7%.
 
 ## ⚪ Candidate
 
 | Ticker | Why watched |
 |---|---|
-| CRM | Dreamforce / Claudeforce–Anthropic cycle; most extended of the four |
-| LNG | Cleanest sell-side book on the list; lowest ATR; LNG supply cycle |
+| CRM | Dreamforce / Claudeforce–Anthropic cycle; the momentum name of the group |
 
 ## Notes
 
@@ -30,3 +33,8 @@ reads it, so the report follows automatically.
 - This file contains position data. If you would rather not commit cost basis,
   add `.claude/portfolio.md` to `.gitignore` and keep it local — the command
   degrades to candidate-only reporting for any name it cannot read.
+
+## Ledger history
+
+- **23 Sep 2026** — CRCL restated to 80 @ 83.00 (previously recorded 50 @ 94.50);
+  LNG opened at 50 @ 267.00 and promoted from candidate to held; ORCL unchanged.
