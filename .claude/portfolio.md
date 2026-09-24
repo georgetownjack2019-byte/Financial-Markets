@@ -13,9 +13,10 @@ reads it, so the report follows automatically.
 | ORCL | 100 | 154.00 | 50 @ 155.00 · 50 @ 153.00 | Sep 2026 |
 | CRCL | 80 | 83.00 | 80 @ 83.00 | Sep 2026 |
 | LNG | 50 | 267.00 | 50 @ 267.00 | Sep 2026 |
+| GOOGL | 40 | 340.00 | 40 @ 340.00 | Sep 2026 |
 
-Book cost **$35,390**. Weights at the 23 Sep close: ORCL 40.8%, LNG 38.6%,
-CRCL 20.7%.
+Book cost **$48,990**. Weights at the 24 Sep close: ORCL 28.5%, LNG 28.2%,
+GOOGL 28.0%, CRCL 15.2%.
 
 ## ⚪ Candidate
 
@@ -38,3 +39,5 @@ CRCL 20.7%.
 
 - **23 Sep 2026** — CRCL restated to 80 @ 83.00 (previously recorded 50 @ 94.50);
   LNG opened at 50 @ 267.00 and promoted from candidate to held; ORCL unchanged.
+- **24 Sep 2026** — GOOGL opened at 40 @ 340.00, taken after the close back above
+  the 200-day (337.85). The add cuts ORCL from 40.8% to 28.5% of the book.
