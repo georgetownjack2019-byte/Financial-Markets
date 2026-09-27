@@ -7,7 +7,7 @@
 | `/crypto-levels` | ₿ Crypto Levels — mechanical BTC/ETH entry, stop, target | daily |
 | `/targets-consensus` | 📊 Targets & Consensus — analyst targets across the full watchlist | weekly / on demand |
 | `/portfolio-followup` | 💼 Portfolio Follow-up — ledger, recap, sentiment and consensus for held + candidate names only | daily / on demand |
-| `/book-catalysts` | ⚖️ Book Catalysts — today's and the week's bullish/bearish news for held names, with the mechanism and the dollar impact | daily / on demand |
+| `/book-catalysts` | ⚖️ Book Catalysts — written briefing on the day's and the week's bullish/bearish news for held names, and how each story moves the price | daily / on demand |
 | `/push-daily` | Push arbitrary already-written content to the same Notion page | ad hoc |
 
 All seven publish as child pages of **DAILY BRIEFINGS**
@@ -15,8 +15,9 @@ All seven publish as child pages of **DAILY BRIEFINGS**
 
 Shared configuration:
 - `.claude/watchlist.md` — the name list and groups, for the market-wide reports.
-- `.claude/portfolio.md` — held positions (with cost basis) and candidates, for
-  `/portfolio-followup` and `/book-catalysts`. Neither reads the watchlist.
+- `.claude/portfolio.md` — held positions (with cost basis) and candidates.
+  `/portfolio-followup` uses the cost basis; `/book-catalysts` takes only the
+  name list and never reports P&L. Neither reads the watchlist.
 - `.claude/notion-push-rules.md` — destination page id, formatting, data-integrity rules.
 
 ## API key (FMP)

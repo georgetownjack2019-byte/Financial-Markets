@@ -1,37 +1,47 @@
 ---
-description: Today's bullish and bearish news for the held book and the week's upcoming news, each with the mechanism that moves the price and the dollar impact
-argument-hint: [optional — "today" for the news only, "week" for the forward half, or a ticker to focus on]
+description: A written briefing on the day's bullish and bearish news for my holdings and what's coming this week, explaining how each story moves the price
+argument-hint: [optional — "today", "week", or a ticker to focus on]
 allowed-tools: Bash, Read, Write, mcp__Notion__notion-fetch, mcp__Notion__notion-create-pages, mcp__Notion__notion-update-page
 ---
 
 # ⚖️ Book Catalysts
 
-**News in, price impact out.** Four questions, in this order:
+A briefing in **plain prose** on four things:
 
-1. What was **bullish** for my names today, and how much is it worth?
-2. What was **bearish** today, and how much did it cost?
-3. What **bullish** news is coming this week?
-4. What **bearish** news is coming this week?
+1. What was **bullish** for my names today
+2. What was **bearish** today
+3. What **bullish** news is coming this week
+4. What **bearish** news is coming this week
 
-Every item is a real news story or a dated scheduled event — never an abstract
-factor. Every item carries the **mechanism** (one clause on why it moves the
-price) and the **size** (percent and dollars on the actual position).
+and for every item, **how it moves the price** — the actual chain from the
+headline to the share price.
 
-Read `.claude/portfolio.md` for names and cost basis, and
-`.claude/notion-push-rules.md` for destination and formatting. Both binding.
-Held names only. `.claude/watchlist.md` is not used.
+Read `.claude/portfolio.md` for the list of held names. That file is the name
+source only: **do not report position sizes, cost basis, P&L, portfolio value
+or weights anywhere in this report.** This is about the stocks, not the account.
+`.claude/watchlist.md` is not used.
 
 Scope (if given): `$ARGUMENTS`
 
-**Keep it short enough to read in five minutes.** Lead with the biggest dollar
-item in each direction. If a section has nothing in it, say "nothing" in one
-line rather than padding it.
+## How to write it
 
-## Title & icon
+**Prose, not tables.** No tables anywhere in the body. The point is explanation,
+and a table cannot carry a causal chain. Short paragraphs, one story at a time,
+biggest mover first.
 
-- Title: `⚖️ Book Catalysts — <Ddd DD Mon YYYY>`, icon `⚖️`
-- Existing page for the day → append `(update 2)` / `(intraday)`. Never
-  overwrite.
+**Readable in five minutes.** If a section is empty, say so in a line and move
+on — never pad.
+
+Write like a good analyst explaining it out loud: name the story, say who it
+hits, then walk the mechanism. "Oracle asked for relief on a data-centre
+contract, which makes the delivery of its backlog look less certain, and the
+backlog is the whole reason the stock carries the multiple it does" — not
+"negative datacenter sentiment".
+
+**Size the move in the stock's own terms**, in words. A name that normally moves
+2% a day getting a 5% story is a big deal; the same 5% in a name that swings 6%
+daily is ordinary. Say which. Percentages and price levels are fine. **Dollar
+amounts tied to my holdings are not.**
 
 ## 1 · Data
 
@@ -42,119 +52,96 @@ FMP `/stable`, key from `FMP_API_KEY`. Per held name: `quote`,
 `earnings-calendar`, `treasury-rates`, `news/general-latest`,
 `news/crypto-latest`.
 
-Day-over-day from **consecutive closes**. The provider's EOD `change` field is
+Day-over-day from **consecutive closes** — the provider's EOD `change` field is
 open-to-close and must not be used. State the as-of time and whether the market
 was open.
 
-## 2 · The sizing model, fitted once and used everywhere
+Work out quietly, for your own use and never printed as a table: each name's
+typical daily move, how much of it the market explains, and how big a move each
+type of scheduled release has historically produced. That is how you judge
+whether a story is large or small, and it belongs in the prose as a phrase
+("about twice a normal day for Oracle"), not as a figure in a grid.
 
-Fit **one multivariate OLS per name** — index, 10-year yield in bp, and oil or
-crypto where relevant — in a single regression.
+When fitting factors, fit them **together in one regression**, never separately
+and added — rate moves already drive much of the index, so a standalone rates
+beta double-counts. On this book that error overstated rates sensitivity by
+roughly 13x.
 
-**Never fit the factors separately and add them.** Rate moves already drive much
-of what the index does, so a standalone rates beta re-charges the book for the
-equity selloff those rates caused. On this book that error overstated rates
-sensitivity roughly 13x (−$1,118 per 25bp against a true −$84). Always quote the
-rates coefficient as "holding the index constant".
+## 2 · The report
 
-Keep from the fit, for use in the news tables:
+### `## Today — bullish`
 
-- **Factor betas** → sizes macro and sector news.
-- **R² and residual SD per name** → sizes company news. A story worth 1σ of that
-  name's residual is worth `residual SD × position value`.
-- **Event multiples** — median absolute move on past occurrences of each
-  scheduled release type, over its baseline → sizes the week's calendar.
+Each real positive story, biggest first. Name it, say which holding it touches,
+then explain the mechanism: what changed, why that changes what someone will
+pay for the shares, and whether the market appeared to agree today.
 
-R² is also reported to the reader, because it sets how much any macro
-explanation is worth: where the market explains under ~30% of a name's daily
-variance, say so and lean on the company news instead.
+### `## Today — bearish`
 
-## 3 · The report
+The same for negatives, including **unresolved carry-over** — overhangs from
+earlier that got neither better nor worse. Silence is not resolution, and a
+story that is still open is still a risk.
 
-### `## Today — 🟢 bullish`
+If a stock moved hard with **no story in any feed**, say exactly that and flag
+it for follow-through. An unexplained large move usually means news the feed
+missed or someone repositioning; pretending to explain it is worse than
+admitting it.
 
-One row per story, biggest dollar impact first:
+If a stock barely moved on loud headlines, say the news was already priced
+rather than implying it drove anything.
 
-`News · Name · Mechanism (one clause) · Move % · $ impact`
+### `## This week — bullish`
 
-Mechanism must be concrete and causal — "Berkshire disclosed a \$38bn stake,
-which sets a floor under the float", not "positive sentiment".
+Dated. Scheduled releases, earnings and live storylines that lean positive.
+For each: when it lands, which holding cares, what a good outcome looks like,
+and how it would reach the price. Where history gives a sense of the size, say
+so in words — "Oracle has moved roughly twice its normal amount on past JOLTS
+days".
 
-### `## Today — 🔴 bearish`
+### `## This week — bearish`
 
-Same shape.
+The same for the downside. Include the **ordinary-week risk** where it applies:
+if a stock's normal weekly range already reaches a level that matters, say that
+plainly — a likely touch is a base case, not a tail, and should be described
+that way.
 
-### `## Did the price agree?`
+### `## How these move the price`
 
-One compact table: each name's actual move split into `market · rates ·
-residual`. This is a **check on the news sections, not a feature of its own** —
-keep it to the table plus at most two lines.
+The teaching section, and the reason the report exists. In plain language, walk
+the two or three chains that actually did the work this week. Why a hot
+inflation print reaches a software company at all. Why oil reaches a fee-based
+energy name only weakly. Why a CFO leaving matters more at a young company than
+an old one.
 
-Three outcomes to call out explicitly:
+Call out any story that **cuts both ways across the holdings** — helps one name
+and hurts another through a different channel. Explain both sides rather than
+picking the convenient one.
 
-- **Big residual, story found** → the news above explains the day. Good.
-- **Big residual, no story** → say so plainly. An unexplained ±1.5σ move means
-  there is news the feed missed, or someone is repositioning. Flag it for
-  follow-through the next session.
-- **Small residual on a day of loud headlines** → the news was already priced.
-  Say that rather than implying it moved the stock.
+### `## What to watch`
 
-### `## This week — 🟢 bullish`
+Three to five lines. The specific things that would change the picture: a level,
+a scheduled number, a story that resolves.
 
-Dated. Scheduled releases and earnings with a consensus, plus live unscheduled
-storylines that could break either way but currently lean positive.
+## 3 · Rules that keep this honest
 
-`When · Event or story · Name(s) · Why it helps · Expected move · $ if it lands`
-
-### `## This week — 🔴 bearish`
-
-Same. Include the **ordinary-week risk**: cross each name's 5-day empirical
-range against its support, and name any position whose normal weekly downside
-already breaks a level. A 75% chance of touching support is a base case, not a
-tail, and must be described that way.
-
-### `## How the news reaches the price`
-
-Short. For each channel actually used above, one or two sentences on the
-transmission — why a hot inflation print reaches a software company at all, why
-oil reaches an energy name only weakly through a fee-based model. **This is the
-section that teaches, so write it in plain language and skip the jargon.**
-
-Flag any item that **inverts**: a story that helps one position through one
-channel but costs the book more through another. Oil is the standing example —
-a crude spike pays the energy name via its Brent beta and charges the
-rate-sensitive majority several times over through inflation and yields. Show
-the netting.
-
-### `## Levels and what to watch`
-
-Per name: spot, basis, next support, line to reclaim, and the **empirical
-probability of touching each within five sessions**, computed from actual
-intraday paths rather than a normal assumption. Then three to five lines on
-what would change the picture.
-
-## 4 · Rules that keep this honest
-
-- **Measured vs assumed.** Betas, R², residual SDs and touch probabilities are
-  measured; scenario sizes ("Brent +5%") are chosen for illustration. Label
-  which is which. Never present an assumed input as a forecast.
-- **Sort the news, don't just list it.** Separate genuine new events from
+- **Sort the news, don't just list it.** Separate real new events from
   backward-looking disclosures — 13F filings, insider sales executed weeks
-  earlier, re-reported prior stories. These trip a keyword filter and carry
-  almost no information. Say so explicitly rather than reporting them as news.
-- A name with **zero** articles is a finding, especially after a large move or
-  alongside thin analyst coverage. State it.
-- **Unresolved carry-over**: overhangs from earlier that got neither better nor
-  worse still belong in the bearish section. Silence is not resolution.
-- Name what you **cannot** size — diffuse Fed-speaker risk, a first-time
-  read-through from another company's earnings — rather than inventing a number.
-- Report losing rows at full size. Never net a bad item against a good one, and
-  never drop a bearish row for balance.
-- Small event samples (n < 10) and weak fits get flagged at the point of use.
-- If a prior page exists, open with two lines scoring it: which called items
-  fired, and where the sizing was wrong.
-- A quiet news feed is not proof nothing happened — disclosures land pre-market.
+  earlier, re-reported prior stories. They trip a keyword filter and carry
+  almost no information. Say so rather than reporting them as news.
+- A name with **zero** articles is worth stating, especially after a big move or
+  alongside thin analyst coverage.
+- Name what you **cannot** judge — diffuse Fed-speaker risk, an untested
+  read-through from another company's earnings — instead of inventing a number
+  or a confidence you do not have.
+- Never soften a bearish story by pairing it with a bullish one, and never drop
+  one for balance.
+- Distinguish what is **measured** from what is **assumed**, and say which.
+- Small samples and weak relationships get flagged where they are used.
+- If a prior page exists, open with two lines: which of last time's expected
+  stories actually landed, and where the read was wrong.
+- A quiet feed is not proof nothing happened — disclosures land pre-market.
 
-## 5 · Push
+## 4 · Push
 
-Per `.claude/notion-push-rules.md`. Report the title and URL. Nothing else.
+Per `.claude/notion-push-rules.md` for destination and formatting — but the
+body stays prose, and the no-P&L rule above overrides any table convention in
+those rules. Report the title and URL. Nothing else.
