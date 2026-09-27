@@ -7,7 +7,7 @@
 | `/crypto-levels` | ₿ Crypto Levels — mechanical BTC/ETH entry, stop, target | daily |
 | `/targets-consensus` | 📊 Targets & Consensus — analyst targets across the full watchlist | weekly / on demand |
 | `/portfolio-followup` | 💼 Portfolio Follow-up — ledger, recap, sentiment and consensus for held + candidate names only | daily / on demand |
-| `/book-catalysts` | ⚖️ Book Catalysts — every live bullish and bearish development, sized in dollars against the held book | on demand / weekly |
+| `/book-catalysts` | ⚖️ Book Catalysts — today's and the week's bullish/bearish news for held names, with the mechanism and the dollar impact | daily / on demand |
 | `/push-daily` | Push arbitrary already-written content to the same Notion page | ad hoc |
 
 All seven publish as child pages of **DAILY BRIEFINGS**
