@@ -6,9 +6,16 @@ allowed-tools: Bash, Read, Write, mcp__Notion__notion-fetch, mcp__Notion__notion
 
 # ⚖️ Book Catalysts — bullish vs bearish, priced
 
-Every live catalyst for the held book, translated into **dollars against the
-real positions**. Not a news digest: the point is that "bullish for LNG" and
-"bullish for the book" are different claims, and only arithmetic separates them.
+Two questions, in this order:
+
+1. **Why did each name move?** — split today's move into the part the market
+   explains and the part that is the company's own story.
+2. **What can it do next?** — forward ranges from each name's own volatility,
+   plus the catalysts that could push it outside them.
+
+Not a news digest. The organising fact is that for a concentrated book the
+market usually explains a *minority* of any given day, so an explanation that
+stops at "the Nasdaq was down" has explained almost nothing.
 
 Read `.claude/portfolio.md` for names, tiers and cost basis, and
 `.claude/notion-push-rules.md` for destination, formatting and data-integrity
@@ -39,49 +46,83 @@ Day-over-day change comes from **consecutive closes**. The provider's EOD
 
 State the as-of timestamp and whether the market was open at read time.
 
-## 2 · Measure the channels before naming any catalyst
+## 2 · Fit one multi-factor model per name — never separate single-factor ones
 
-This ordering is the whole method. Establish how the book transmits *first*,
-then every catalyst gets routed through a measured channel instead of a guess.
+**Run a single multivariate OLS per name**, regressing its daily % return on all
+drivers *together*:
 
-Regress each held name's daily % return on each driver, over the full sample:
-
-| Channel | Driver series | Note |
+| Factor | Series | Applies to |
 |---|---|---|
-| Equity beta | `^IXIC` daily % | The headline exposure |
-| **Rates** | `treasury-rates` `year10`, **daily change in bp** | Filter to days with `abs(dY) > 0.5bp` — flat days add noise and flatten the slope |
-| Oil | `BZUSD` daily % | Only for energy names |
-| Crypto | `BTCUSD` daily % | Only for crypto-linked names |
+| Equity | `^IXIC` daily % | every name |
+| Rates | `treasury-rates` `year10`, daily change in **bp** | every name |
+| Oil | `BZUSD` daily % | energy names only |
+| Crypto | `BTCUSD` daily % | crypto-linked names only |
 
-Report **beta and correlation together, always.** A beta without its correlation
-is a number pretending to be a forecast. Where `abs(corr) < 0.3`, say in the
-text that the relationship is weak and the dollar figures are central tendencies
-with wide scatter.
+**Fitting the factors separately and adding the results double-counts and is
+wrong.** Rate moves already drive much of what the equity index does, so a
+univariate rates beta silently re-charges the book for the equity selloff those
+rates caused. On this book that error overstated the rates sensitivity by
+roughly 13x (−$1,118 per 25bp against a true −$84). Always quote the rates
+coefficient as "holding the index constant".
 
-Then compute and publish:
+From the fitted model, compute and publish:
 
-- **Weighted book beta** per channel — the sum of (weight × beta). This is the
-  single most useful number on the page.
-- **The split**: what share of the book wants each driver to go up vs down.
-  A book that is 72% long-duration and 28% energy is a rates bet whatever the
-  ticker list looks like.
-- **Cost per unit**: "the book loses X% per +1bp on the 10-year, i.e. $Y per
-  +25bp". Quote it in dollars, not just percent.
+- **R² per name** — the share of daily variance the factors explain. This is the
+  headline number of the whole report, not a diagnostic. Publish `1 − R²` beside
+  it and label it **company-specific**.
+- **Residual standard deviation** — the 1-sigma daily move with the market
+  stripped out, in % and in dollars on the position.
+- **Weighted book beta** per factor, and the book's dollar cost per 25bp.
+- **The split**: what share of the book wants each driver up vs down.
+
+Report **every coefficient with its R² or correlation.** A beta without its fit
+is a number pretending to be a forecast. Where the market explains under ~30%,
+say so in the text at the point of use: for that name, macro reasoning explains
+a minority of the move and the news section carries the weight.
 
 ## 3 · Sections, in this order
 
-### `## 1 · What the book is, in exposure terms`
+### `## 1 · Why it moved — attribution`
 
-The position table (shares, basis, price, P&L, weight) followed by the channel
-matrix: per name and for the book, each beta with its correlation.
+The position table (shares, basis, price, P&L, weight), then the attribution
+table for the session: for each name, the actual move decomposed into
 
-### `## 2 · 🟢 Bullish, sized`
+`market · rates · commodity/crypto · RESIDUAL (= company-specific)`
+
+Flag any residual above roughly 1.5x the name's residual SD — that is a
+company-story day, and the news section must name the cause or state plainly
+that none was found.
+
+Then the standing explanatory table: per name, **R² (market) vs 1 − R²
+(company-specific)**, with the daily 1-sigma split into its market and company
+parts in dollars.
+
+Rank the names by R². The lowest-R² name is the one where macro commentary is
+least useful and company news matters most — say which it is.
+
+### `## 2 · What it can do next — ranges`
+
+From each name's own realised daily volatility:
+
+`Spot · daily 1σ · 1-week 1σ band · 1-week 2σ band`
+
+and the same for the book in dollars, at 1σ and 2σ.
+
+State clearly that 1σ is roughly a 68% band — a one-in-three chance of
+finishing outside it — and that these are distributions, not forecasts.
+
+**Then cross the bands against the levels**: name every position whose 1σ
+one-week downside sits *below* its stated support or stop. That means an
+ordinary week breaks the level, which is a materially different risk from a
+tail event, and it must be called out explicitly.
+
+### `## 3 · 🟢 Bullish, sized`
 
 One row per catalyst. Columns:
 
 `Catalyst · Channel and assumed magnitude · Book $ · then one column per name`
 
-### `## 3 · 🔴 Bearish, sized`
+### `## 4 · 🔴 Bearish, sized`
 
 Same shape. Also include the **break-support arithmetic**: for each name, the
 dollar cost of walking to its next support, and to the one after that, plus the
@@ -89,7 +130,7 @@ cumulative P&L against cost basis at each level. Then state what it costs if
 every name breaks its first support in the same session — a correlated risk-off
 day is the scenario a low correlation matrix does *not* protect against.
 
-### `## 4 · The inversion check`
+### `## 5 · The inversion check`
 
 **Mandatory section — never skip it, even to say nothing inverted.**
 
@@ -103,7 +144,7 @@ Any catalyst whose **net book effect has the opposite sign to its obvious
 read** goes in this section with the full derivation. These are the findings
 that justify the page existing.
 
-### `## 5 · Combined scenarios`
+### `## 6 · Combined scenarios`
 
 Three to six mixed paths (full bull, dovish data, term-premium leg, full
 risk-off …), each stated as a combination of channel moves, with the book
@@ -111,7 +152,7 @@ figure and the per-name split. Say plainly whether the tails are symmetric —
 if the full-bear number is larger than the full-bull number, that is the
 headline, not a footnote.
 
-### `## 6 · What I cannot size`
+### `## 7 · What I cannot size`
 
 List the catalysts with no measurable channel — diffuse Fed-speaker risk, a
 first-time read-through from another company's earnings, an unscheduled
@@ -119,7 +160,7 @@ political outcome. **Name them and say why, rather than inventing a number.**
 Where a rough bound exists from an observed analogue, give it and label it as
 judgement, not measurement.
 
-### `## 7 · News classification`
+### `## 8 · News classification`
 
 Sweep the per-name feeds plus `news/stock-latest`, `news/general-latest` and
 `news/crypto-latest` for the period since the last run. Sort every item into:
@@ -136,7 +177,7 @@ A name with **zero** articles is a finding worth stating, especially after a
 large move or alongside a thin analyst book. And note in the footer that a
 quiet feed is not proof nothing happened — disclosures land pre-market.
 
-### `## 8 · Standing levels`
+### `## 9 · Standing levels`
 
 Per name: spot, basis, next support, line to reclaim, hard invalidation, and
 ATR(14) as % of price. For any name whose ATR exceeds ~5%, state that stops
@@ -144,9 +185,12 @@ must be **closing** stops — an intraday touch will be noise.
 
 ## 4 · Rules that keep this honest
 
-- **Measured vs assumed.** Betas are measured from data; scenario magnitudes
-  ("Brent +5%", "10Y +20bp") are chosen for illustration. Label which is which
-  in the footer of every page. Never present an assumed input as a forecast.
+- **Measured vs assumed.** Betas, R² and residual SDs are measured from data;
+  scenario magnitudes ("Brent +5%", "10Y +20bp") are chosen for illustration.
+  Label which is which in the footer of every page. Never present an assumed
+  input as a forecast.
+- **Never fit factors separately and add them.** See §2. If a prior page quoted
+  a univariate sensitivity, correct it explicitly rather than quietly restating.
 - **Every figure is beta-implied and excludes company-specific news** — which
   is frequently what actually moves these names. Say so.
 - Report the book's losing scenarios at full size. Never net a bad path against
