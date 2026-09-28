@@ -25,9 +25,13 @@ Scope (if given): `$ARGUMENTS`
 
 ## How to write it
 
-**Prose, not tables.** No tables anywhere in the body. The point is explanation,
-and a table cannot carry a causal chain. Short paragraphs, one story at a time,
-biggest mover first.
+**Prose, with exactly one table section.** The four news sections are written
+out in paragraphs — the point is explanation, and a table cannot carry a causal
+chain. Short paragraphs, one story at a time, biggest mover first.
+
+The single exception is the **At a glance** section (below), which condenses
+everything already argued in prose into two scannable tables. It adds no new
+claims: every row must trace to a paragraph above it.
 
 **Readable in five minutes.** If a section is empty, say so in a line and move
 on — never pad.
@@ -103,6 +107,26 @@ The same for the downside. Include the **ordinary-week risk** where it applies:
 if a stock's normal weekly range already reaches a level that matters, say that
 plainly — a likely touch is a base case, not a tail, and should be described
 that way.
+
+### `## At a glance — what moves what`
+
+Two tables, and the only tables in the report. They summarise; they never
+introduce a story that the prose did not already explain.
+
+**Table one — the session's news.** Columns: `News · Stock · 🟢/🔴 · How it
+reaches the price · How hard`. Order by how hard it hit, not chronologically.
+The mechanism column is one line, causal, no adjectives. The strength column
+carries the measured comparison — the actual percentage move, or how it
+compares with that stock's normal day. Give backwards-looking disclosures a row
+with an em dash for direction and "Not news" in the mechanism, so a reader
+scanning only the table is not misled by them.
+
+**Table two — the week ahead.** Columns: `When · Event · Hits · Good outcome →
+price · Bad outcome → price · How hard`. Every scheduled item gets **both**
+directions, because a calendar entry is two-sided until it prints. Include the
+unscheduled and continuous items — a pending announcement, the level of
+long-end yields — with "Any day" as the timing. Mark anything unmeasured as
+**judgement** in the strength column.
 
 ### `## How these move the price`
 
