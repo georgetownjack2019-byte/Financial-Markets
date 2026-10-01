@@ -25,6 +25,7 @@ GOOGL 28.0%, CRCL 15.2%.
 | AVGO | `AVGO` | Custom AI silicon and the data-centre switching backbone; the China state-data-centre survey is the live overhang |
 | BTC | `BTCUSD` | The driver behind CRCL — tightest single relationship in the book at ~0.55 correlation. Watched as a factor as much as an instrument |
 | CRM | `CRM` | Dreamforce / Claudeforce–Anthropic cycle; the momentum name of the group |
+| EPD | `EPD` | Midstream NGL and pipeline fees. A high-yield income name, so it competes directly with the risk-free rate — the cleanest read in the list on what the long end is doing |
 
 ## Notes
 
@@ -32,6 +33,11 @@ GOOGL 28.0%, CRCL 15.2%.
   lots differ, report P&L on the blended average and note the per-lot split.
 - A candidate has no cost basis: report levels and consensus, leave every P&L
   cell `—`. Do not invent an entry price.
+- **EPD is a partnership, not a corporation.** It pays *distributions*, not
+  dividends, and issues a K-1 rather than a 1099. Call the payout a distribution,
+  and note that analyst coverage of partnerships is thinner than for comparable
+  corporations, so a small `n` on its targets is normal rather than a signal.
+  Its relevant driver is the long end of the curve, not the oil price.
 - **Non-equity entries** carry their data symbol in the Symbol column. BTC trades
   as `BTCUSD`: it has no analyst targets, no ratings and no earnings date, so
   leave those `—` rather than reporting zeros, and take its news from
@@ -53,3 +59,6 @@ GOOGL 28.0%, CRCL 15.2%.
 - **01 Oct 2026** — AVGO and BTC (`BTCUSD`) added as **candidates**, not held: no
   size or entry price was given, so no cost basis is recorded. Move either to the
   held table when a position opens.
+- **01 Oct 2026** — EPD added as a **candidate**. Partnership, not a corporation:
+  distributions rather than dividends, and the long end of the curve rather than
+  crude is its driver.
