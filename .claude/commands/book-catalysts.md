@@ -16,10 +16,18 @@ A briefing in **plain prose** on four things:
 and for every item, **how it moves the price** — the actual chain from the
 headline to the share price.
 
-Read `.claude/portfolio.md` for the list of held names. That file is the name
-source only: **do not report position sizes, cost basis, P&L, portfolio value
-or weights anywhere in this report.** This is about the stocks, not the account.
-`.claude/watchlist.md` is not used.
+Read `.claude/portfolio.md` for the names. Cover the **held** names in full and
+give **candidates** a shorter pass — a paragraph each when they have real news,
+a line when they do not. That file is the name source only: **do not report
+position sizes, cost basis, P&L, portfolio value or weights anywhere in this
+report.** This is about the stocks, not the account. `.claude/watchlist.md` is
+not used.
+
+Some entries are not equities. Use the Symbol column in that file, and where a
+name has no analyst targets, ratings or earnings date, write `—` rather than
+reporting a zero. For crypto take the news from `news/crypto-latest`, and
+remember it trades through the weekend — a Monday report covers three sessions
+for crypto and one for the equities, which must be said rather than glossed.
 
 Scope (if given): `$ARGUMENTS`
 

@@ -20,9 +20,11 @@ GOOGL 28.0%, CRCL 15.2%.
 
 ## ⚪ Candidate
 
-| Ticker | Why watched |
-|---|---|
-| CRM | Dreamforce / Claudeforce–Anthropic cycle; the momentum name of the group |
+| Ticker | Symbol | Why watched |
+|---|---|---|
+| AVGO | `AVGO` | Custom AI silicon and the data-centre switching backbone; the China state-data-centre survey is the live overhang |
+| BTC | `BTCUSD` | The driver behind CRCL — tightest single relationship in the book at ~0.55 correlation. Watched as a factor as much as an instrument |
+| CRM | `CRM` | Dreamforce / Claudeforce–Anthropic cycle; the momentum name of the group |
 
 ## Notes
 
@@ -30,6 +32,13 @@ GOOGL 28.0%, CRCL 15.2%.
   lots differ, report P&L on the blended average and note the per-lot split.
 - A candidate has no cost basis: report levels and consensus, leave every P&L
   cell `—`. Do not invent an entry price.
+- **Non-equity entries** carry their data symbol in the Symbol column. BTC trades
+  as `BTCUSD`: it has no analyst targets, no ratings and no earnings date, so
+  leave those `—` rather than reporting zeros, and take its news from
+  `news/crypto-latest` instead of `news/stock`. It trades through weekends, so a
+  Monday report covers three days of price action for BTC and one for the
+  equities — say so rather than comparing them as though they were the same
+  window.
 - Moving a name between tiers is an edit here, not a change to the command.
 - This file contains position data. If you would rather not commit cost basis,
   add `.claude/portfolio.md` to `.gitignore` and keep it local — the command
@@ -41,3 +50,6 @@ GOOGL 28.0%, CRCL 15.2%.
   LNG opened at 50 @ 267.00 and promoted from candidate to held; ORCL unchanged.
 - **24 Sep 2026** — GOOGL opened at 40 @ 340.00, taken after the close back above
   the 200-day (337.85). The add cuts ORCL from 40.8% to 28.5% of the book.
+- **01 Oct 2026** — AVGO and BTC (`BTCUSD`) added as **candidates**, not held: no
+  size or entry price was given, so no cost basis is recorded. Move either to the
+  held table when a position opens.
